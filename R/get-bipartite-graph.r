@@ -1,12 +1,13 @@
 #' Construct a bipartite graph network from a bipartite adjacency matrix
 #'
 #' @param A The bipartite adjacency matrix
+#' @param types Names for the bipartite nodes c(row_name, column_name)
 #'
 #' @return A bipartite graph object
+#' @importFrom magrittr %>%
 #' @export
-#'
-#' @examples
-get_bipartite_graph <- function(A) {
+
+get_bipartite_graph <- function(A,types = c("geography","hospital")) {
 
     # Vectorized volume by geography and firm
     k_z <- apply(A,1,sum); names(k_z)  = rownames(A)
@@ -17,10 +18,9 @@ get_bipartite_graph <- function(A) {
 
     G <-
         G_ %>%
-        as_tbl_graph() %>%
-        activate(nodes) %>%
-        mutate(type = ifelse(type==TRUE, "hospital","geography")) %>%
-        mutate(volume = c(k_j,k_z)[name])
+        tidygraph::as_tbl_graph() %>%
+        tidygraph::activate(nodes) %>%
+        dplyr::mutate(type = ifelse(type==TRUE, types[2],types[1]))
 
     out <- list(G_ = G_, G = G)
     return(out)
