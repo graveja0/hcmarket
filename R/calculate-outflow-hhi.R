@@ -5,6 +5,7 @@
 #'
 #' @return
 #' @export
+#' @importFrom magrittr %>%
 #'
 calculate_outflow_hhi <- function(A, markets) {
     d_z <- apply(A,1,sum); names(d_z) <- rownames(A)

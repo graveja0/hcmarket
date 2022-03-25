@@ -2,9 +2,10 @@
 #'
 #' @param A Bipartite adjacency matrix
 #' @param markets Named vector mapping each firm to its market
-#'
 #' @return
 #' @export
+#'
+#' @importFrom magrittr ‘%>%’
 calculate_firm_hhi <- function(A, markets) {
 
     # Kessler-McClellan / Zwanziger Approach

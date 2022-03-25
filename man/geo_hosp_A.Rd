@@ -8,12 +8,12 @@
 A matrix with 12 rows and 10 columns
 \describe{
 \item{rows}{Geographic micromarkets}
-\item{}{Hospitals}
+\item{columns}{Hospitals}
 ...
 }
 }
 \usage{
-geo_hosp_A
+data(geo_hosp_A)
 }
 \description{
 A matrix summarizing aggregate demand within a bipartite adjacency matrix.

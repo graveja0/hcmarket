@@ -2,14 +2,14 @@
 #'
 #' @param A Bipartite adjacency matrix
 #' @param markets Named vector of geographic markets
-#'
+#' @importFrom magrittr %>%
 #' @return
 #' @export
 calculate_geographic_market_hhi_from_firm_hhi <- function(A,markets) {
     firm_market <- rep(1,ncol(A))
     names(firm_market) <- colnames(A)
     colnames(A)
-    hhi_j <- calculate_firm_hhi(A,market = firm_market) %>% purrr::pluck("firm_hhi_km") %>% tibble::deframe()
+    hhi_j <- calculate_firm_hhi(A,markets = firm_market) %>% purrr::pluck("firm_hhi_km") %>% tibble::deframe()
 
     d_z <- apply(A,1,sum); names(d_z) <- rownames(A)
     D_z <- diag(d_z); colnames(D_z) = rownames(D_z) = rownames(A)
