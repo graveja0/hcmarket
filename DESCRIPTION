@@ -19,7 +19,14 @@ Imports:
     ggplot2,
     ggdendro,
     purrr,
-    tibble
+    tibble,
+    httr,
+    jsonlite,
+    stringr,
+    sf,
+    rlang,
+    tidyr,
+    glue
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
