@@ -12,6 +12,7 @@
 #' @export
 
 get_mapbox_isochrone <- function(df, id, long, lat, contours_minutes, base_url = "https://api.mapbox.com/", mapbox_token = "") {
+    request_url <- NULL
     id <- rlang::enquo(id)
     y <- rlang::enquo(lat)
     x <- rlang::enquo(long)
@@ -66,8 +67,10 @@ get_mapbox_isochrone <- function(df, id, long, lat, contours_minutes, base_url =
                         unique() %>%
                         sf::st_as_sf(coords = c("x","y"), crs = 4326) %>%
                         dplyr::summarize(geometry = sf::st_combine(geometry)) %>%
-                        sf::st_cast("POLYGON") %>%
-                        sf::st_simplify(dTolerance = 100)
+                        sf::st_cast("POLYGON")
+
+                    cant_simplify <- try(out %>% sf::st_simplify(dTolerance = 100), silent = TRUE)
+                    if (grepl("Error|error",cant_simplify)) out <- out else out <- out %>% sf::st_simplify(dTolerance = 100)
                 }
                 return(out)
 

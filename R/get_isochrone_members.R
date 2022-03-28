@@ -28,9 +28,9 @@ get_isochrone_members <- function(df,id,coords,iso) {
                 dplyr::filter(within==1)
         }))) %>%
     dplyr::select({{id}},within) %>%
-        purrr::set_names(c(rlang::quo_name(id),glue::glue("within_{quo_name(iso)}")))
+        purrr::set_names(c(rlang::quo_name(id),glue::glue("within_{rlang::quo_name(iso)}")))
 
     df %>%
-        dplyr::left_join(df_,quo_name(id)) %>%
+        dplyr::left_join(df_,rlang::quo_name(id)) %>%
         tibble::as_tibble()
 }

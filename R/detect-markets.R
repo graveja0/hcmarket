@@ -16,7 +16,7 @@ detect_markets <- function(A,MARGIN) {
             igraph::graph_from_adjacency_matrix(B_, weighted=TRUE)
     }
     market <- igraph::walktrap.community(G_)
-    dendro <- as.dendrogram(market)
+    dendro <- stats::as.dendrogram(market)
     dendro_plot <- dendro %>% ggdendro::ggdendrogram(rotate = FALSE)
     max_height <- ggplot2::ggplot_build(dendro_plot)$data[[2]]$y[1]
 

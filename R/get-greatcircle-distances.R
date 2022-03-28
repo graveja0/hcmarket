@@ -8,6 +8,7 @@
 #' @export
 
 get_greatcircle_distances <- function(df,id,coords) {
+    to <- km <- from <- foo <- NULL
     id = rlang::enquo(id)
     coords = rlang::enquo(coords)
 

@@ -8,7 +8,7 @@
 #' @export
 
 get_bipartite_graph <- function(A,types = c("geography","hospital")) {
-
+    nodes <- type <- NULL
     # Vectorized volume by geography and firm
     k_z <- apply(A,1,sum); names(k_z)  = rownames(A)
     k_j <- apply(A,2,sum); names(k_j) = colnames(A)

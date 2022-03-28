@@ -10,6 +10,7 @@
 #' @export
 
 get_distance_members <- function(df, id, coords, dist, unit = c("miles","km")) {
+    tmp <- distances <- NULL
     id = rlang::enquo(id)
     coords = rlang::enquo(coords)
 
@@ -21,13 +22,13 @@ get_distance_members <- function(df, id, coords, dist, unit = c("miles","km")) {
     if (unit=="miles") {
         df_ <-
             df_ %>%
-            dplyr::mutate(within = map(distances,~(.x %>% dplyr::filter(miles<dist) %>% dplyr::select(name=to,miles)))) %>%
+            dplyr::mutate(within = purrr::map(distances,~(.x %>% dplyr::filter(miles<dist) %>% dplyr::select(name=to,miles)))) %>%
             dplyr::select(id,within) %>%
             purrr::set_names(c(rlang::quo_name(id),glue::glue("within_{dist}{unit}")))
     } else if (unit=="km") {
         df_ <-
             df_ %>%
-            dplyr::mutate(within = map(distances,~(.x %>% dplyr::filter(km<dist) %>% dplyr::select(name=to,km)))) %>%
+            dplyr::mutate(within = purrr::map(distances,~(.x %>% dplyr::filter(km<dist) %>% dplyr::select(name=to,km)))) %>%
             dplyr::select(id,within) %>%
             purrr::set_names(c(rlang::quo_name(id),glue::glue("within_{dist}{unit}")))
     }
