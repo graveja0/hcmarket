@@ -1,0 +1,61 @@
+---
+title: "create-isochrones"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{create-isochrones}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+source("~/mapbox.r")
+df <- data.frame(id=c("LOC_A","LOC_B","LOC_C","LOC_D","LOC_E"),
+                 x = c(-86.80904001819685,-77.03672814756133,-86.84944585580627,-87.06712684519992,-74.05017),
+                 y = c(36.145976571141574,38.89988307243776,36.12416339993663,35.60692051481932, 40.71649))
+
+```
+
+```{r setup}
+library(hcmarket)
+library(tidyverse)
+library(sf)
+```
+
+
+```{r get isochrones}
+iso30 <-
+    df %>%
+    get_mapbox_isochrone(
+        id = id,
+        lat = y,
+        long = x,
+        contours_minutes = 30,
+        mapbox_token = mapbox_token)
+```
+
+```{r}
+iso30[[1]] %>% 
+    ggplot() + geom_sf() + 
+    ggthemes::theme_map()
+
+```
+```{r}
+df_market_iso30 <- 
+    df %>%
+    group_by(id) %>%
+    nest(coords = c(x,y)) %>%
+    mutate(coords = map(coords,~st_as_sf(.x,coords=c("x","y"), crs = 4326))) %>% 
+    mutate(isochrone30 = map(id,~(iso30[[.x]]))) %>% 
+    get_isochrone_members(id = id, coords = coords, iso = isochrone30)
+```
+
+```{r}
+df_market_iso30 %>% 
+    select(id,within_isochrone30) %>% 
+    unnest(cols = c(within_isochrone30)) 
+```
+

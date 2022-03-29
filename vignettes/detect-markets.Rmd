@@ -1,0 +1,50 @@
+---
+title: "detect-markets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{detect-markets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hcmarket)
+library(tidyverse)
+options(dplyr.summarise.inform = FALSE)
+library(ggdendro)
+data(geo_hosp_A)
+M_z <- geo_hosp_A %>% detect_markets(1)
+```
+
+```{r}
+M_z$dendro %>% ggdendrogram(rotate = TRUE)
+```
+
+```{r}
+M_j <- geo_hosp_A %>% detect_markets(2)
+
+res <-
+    0:M_j$max_height %>%
+    purrr::map(~(calculate_firm_hhi(A = geo_hosp_A,markets=M_j$markets[[paste0(.x)]])$market_hhi))
+
+res %>%
+    bind_rows(.id = "level")  %>%
+    select(level,N,hhi,hhi_km) %>%
+    gather(measure,value,-level,-N) %>%
+    as_tibble() %>%
+    group_by(measure, level) %>%
+    summarise(value = weighted.mean(value,w=N)) %>%
+    mutate(level = as.numeric(paste0(level))) %>%
+    ggplot(aes(x = level, y = value, colour= measure)) +
+    geom_line() +
+    hrbrthemes::theme_ipsum()
+
+```
+
