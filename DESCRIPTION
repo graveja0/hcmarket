@@ -26,7 +26,9 @@ Imports:
     sf,
     rlang,
     tidyr,
-    glue
+    glue,
+    ggthemes,
+    hrbrthemes
 Suggests: 
     rmarkdown,
     knitr,

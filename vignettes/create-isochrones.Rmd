@@ -23,25 +23,27 @@ df <- data.frame(id=c("LOC_A","LOC_B","LOC_C","LOC_D","LOC_E"),
 library(hcmarket)
 library(tidyverse)
 library(sf)
+library(ggthemes)
 ```
 
 
 ```{r get isochrones}
-iso30 <-
-    df %>%
-    get_mapbox_isochrone(
-        id = id,
-        lat = y,
-        long = x,
-        contours_minutes = 30,
-        mapbox_token = mapbox_token)
+data(iso30)
+# iso30 <-
+#     df %>%
+#     get_mapbox_isochrone(
+#         id = id,
+#         lat = y,
+#         long = x,
+#         contours_minutes = 30,
+#         mapbox_token = mapbox_token)
+
 ```
 
 ```{r}
 iso30[[1]] %>% 
     ggplot() + geom_sf() + 
     ggthemes::theme_map()
-
 ```
 ```{r}
 df_market_iso30 <- 
