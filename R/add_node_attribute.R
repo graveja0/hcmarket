@@ -15,5 +15,5 @@ add_node_attribute <- function(G,id) {
         tidygraph::mutate(from_name = (.N()$tmp[from]),
                to_name = (.N()$tmp[to])) %>%
         tidygraph::activate(nodes) %>%
-        dplyr::select(tmp)
+        dplyr::select(-tmp)
 }

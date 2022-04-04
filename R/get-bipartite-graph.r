@@ -22,6 +22,5 @@ get_bipartite_graph <- function(A,types = c("geography","hospital")) {
         tidygraph::activate(nodes) %>%
         dplyr::mutate(type = ifelse(type==TRUE, types[2],types[1]))
 
-    out <- list(G_ = G_, G = G)
-    return(out)
+    return(G)
 }
